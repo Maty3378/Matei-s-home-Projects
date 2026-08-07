@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matei's Homelab</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <h1>Matei's Homelab</h1>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#stack">The stack</a>
+    <a href="#story">Story</a>
+    <a href="#gallery">Photos</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+
+<section id="about">
+  <p class="label">Self-hosting since 2022</p>
+  <h2>I put things on old computers</h2>
+
+  <p class="lede">
+    Hi, I'm Matei. Three-ish years ago I found an old Pentium tower nobody wanted
+    and put Home Assistant on it, and it kind of snowballed from there — now it's
+    home automation, a media server, security cameras, the works.
+  </p>
+  <p class="lede">
+    I'm writing this mostly for me. I forget how I set things up about six months
+    after I set them up, so <b>this is the notebook</b>. If you get ideas out of it too, great.
+  </p>
+
+  <div class="panel">
+    <div class="panel-top">
+      <span>Currently running</span>
+      <span>Aug 2026</span>
+    </div>
+
+    <ul class="services">
+      <li><span class="led on"></span> Home Assistant <i>automation</i></li>
+      <li><span class="led on"></span> TrueNAS <i>storage</i></li>
+      <li><span class="led on"></span> Jellyfin <i>media</i></li>
+      <li><span class="led on"></span> Plex <i>media</i></li>
+      <li><span class="led on"></span> Radarr <i>films</i></li>
+      <li><span class="led on"></span> Sonarr <i>shows</i></li>
+      <li><span class="led on"></span> Prowlarr <i>indexers</i></li>
+      <li><span class="led on"></span> Frigate <i>cameras</i></li>
+      <li><span class="led on"></span> Tailscale <i>network</i></li>
+      <li><span class="led work"></span> Bazarr <i>subtitles</i></li>
+      <li><span class="led work"></span> Cleanuparr <i>tidying</i></li>
+      <li><span class="led work"></span> Profilarr <i>profiles</i></li>
+      <li><span class="led work"></span> Home dashboard <i>my build</i></li>
+    </ul>
+
+    <div class="key">
+      <span><span class="led on"></span> running</span>
+      <span><span class="led work"></span> still configuring</span>
+    </div>
+  </div>
+</section>
+
+
+<section id="stack">
+  <p class="label">What's running</p>
+  <h2>Four setups, roughly</h2>
+
+  <div class="cards">
+
+    <div class="card">
+      <p class="kicker"><span class="led on"></span> Automation</p>
+      <h3>Home Assistant</h3>
+      <p>
+        The first thing I ever self-hosted. Runs on that old Pentium PC on HAOS,
+        with basically every device in the house wired into it at this point.
+        AirCast is still my favourite integration, not gonna lie.
+      </p>
+    </div>
+
+    <div class="card">
+      <p class="kicker"><span class="led on"></span> Media</p>
+      <h3>The *arr stack</h3>
+      <p>
+        Tried running Plex on the old Pentium first. Didn't go well, no GPU and
+        barely any RAM. Once I had the newer tower, TrueNAS could run everything
+        at once and the whole film/TV pipeline basically runs itself now. Radarr,
+        Sonarr and Prowlarr just work. Bazarr, Cleanuparr and Profilarr I'm still
+        fighting with.
+      </p>
+    </div>
+
+    <div class="card">
+      <p class="kicker"><span class="led on"></span> Cameras</p>
+      <h3>Frigate, instead of an NVR</h3>
+      <p>
+        My dad was about to buy a proper NVR box for security cameras. I told him
+        to give me the money instead and I'd build something better. It runs
+        Frigate now and can tell the difference between a car and a person
+        walking up the driveway, which the box he was looking at couldn't do.
+      </p>
+    </div>
+
+    <div class="card">
+      <p class="kicker"><span class="led work"></span> Never finished</p>
+      <h3>My own dashboard</h3>
+      <p>
+        Got tired of Home Assistant's default dashboards not looking how I wanted,
+        so I'm rebuilding it in plain HTML, which I had zero experience with when
+        I started. It talks to HA over WebSocket and actually works. Getting the
+        layout right is a constant fight though.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="story">
+  <p class="label">How it got here</p>
+  <h2>Three years, in order</h2>
+
+  <div class="step">
+    <p class="when">The start</p>
+    <h3>A YouTube rabbit hole</h3>
+    <p>
+      Fell down a home automation YouTube rabbit hole one weekend. Found an old
+      Pentium PC sitting around, put HAOS on it, and started adding devices to it
+      one at a time whenever I had a free evening.
+    </p>
+  </div>
+
+  <div class="step">
+    <p class="when">Not long after</p>
+    <h3>Finding GitHub</h3>
+    <p>
+      Turns out most of the add-ons I wanted were just... posted online by other
+      people, for free. That was my first real exposure to open source, and
+      honestly the whole reason I made a
+      <a href="https://github.com/cobianumatei">GitHub account</a>.
+    </p>
+  </div>
+
+  <div class="step">
+    <p class="when">The upgrade</p>
+    <h3>My cousin's spare PC</h3>
+    <p>
+      My cousin upgraded to a laptop and didn't need his tower anymore, so it
+      came to me. All of a sudden I could actually run more than one thing at a
+      time without it falling over, so TrueNAS, Plex and Jellyfin all happened
+      pretty quickly after that.
+    </p>
+  </div>
+
+  <div class="step">
+    <p class="when">A few weeks later</p>
+    <h3>The camera project</h3>
+    <p>
+      Dad wanted security cameras, so I took the money he was going to spend on
+      an NVR and set up Frigate with some cheap cameras instead. Probably the
+      project I'm proudest of, right behind the media server.
+    </p>
+  </div>
+
+  <div class="step last">
+    <p class="when">Now</p>
+    <h3>Still going</h3>
+    <p>
+      Jellyfin and Tailscale mean my cousin can request and stream films from his
+      own house now, which feels like a nice way to pay him back for the tower.
+      Still slowly working on the dashboard whenever I have time.
+    </p>
+  </div>
+</section>
+
+
+<!-- swap src for real screenshots once I have them -->
+<section id="gallery">
+  <p class="label">Photos</p>
+  <h2>What it actually looks like</h2>
+
+  <div class="shots">
+    <figure>
+      <img src="images/dashboard.png" alt="My home dashboard, built in HTML">
+      <figcaption>The dashboard I built from scratch</figcaption>
+    </figure>
+    <figure>
+      <img src="images/server.png" alt="The PC running TrueNAS">
+      <figcaption>The tower my cousin gave me</figcaption>
+    </figure>
+    <figure>
+      <img src="images/frigate.png" alt="Frigate detecting a car on the driveway">
+      <figcaption>Frigate spotting a car</figcaption>
+    </figure>
+  </div>
+</section>
+
+
+<section id="contact">
+  <p class="label">Say hi</p>
+  <h2>Because I forget things</h2>
+
+  <div class="note">
+    <p>
+      I genuinely forget how half of this stuff is wired together within a few
+      months of setting it up. Which service talks to which, why I configured
+      something a weird way, how I fixed some bug I ran into. Writing it down
+      here is mostly so I don't have to figure it out twice.
+    </p>
+    <p>
+      If you're thinking about starting a homelab of your own: this whole thing
+      started with one free computer nobody wanted and a bit of curiosity. You
+      don't need much more than that to get going.
+    </p>
+    <p>
+      Find me on <a href="https://github.com/cobianumatei">GitHub</a>.
+    </p>
+  </div>
+</section>
+
+
+<footer>
+  <p>Built by Matei, mostly at night</p>
+</footer>
+
+</body>
+</html>
