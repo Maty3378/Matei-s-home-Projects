@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-# Matei-s-home-Projects
-=======
-Matei's Home Projects
+# Matei's Home Projects
 
 A personal website documenting my self-hosting journey — what I've built, how I set it up, and how to fix it when it breaks.
 
@@ -51,4 +48,3 @@ Status
 Still very much a work in progress, and that's the point. This has been a really cool project and it isn't done yet.
 
 If you're thinking about starting your own self-hosting journey, I hope some of this helps.
->>>>>>> 0eb2d60 (Initial commit)
