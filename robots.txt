@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maty3378.github.io/Matei-s-home-Projects/sitemap.xml

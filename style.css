@@ -7,6 +7,7 @@
   --green: #4ADE80;
   --amber: #F0B03E;
   --copper: #E8A33D;
+  color-scheme: dark;
 }
 
 * {
@@ -28,6 +29,11 @@ a {
 
 a:hover {
   color: #FFC46B;
+}
+
+b,
+strong {
+  font-weight: 500;
 }
 
 :focus-visible {
@@ -417,7 +423,7 @@ footer {
   padding: 34px 24px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.75rem;
-  color: #666E7B;
+  color: var(--text-dim);
 }
 
 @media (max-width: 640px) {
@@ -438,5 +444,44 @@ footer {
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  header {
+    position: static;
+    background: #fff;
+  }
+
+  a {
+    color: #111;
+    text-decoration: underline;
+  }
+
+  .panel,
+  .card,
+  figure,
+  .note,
+  .shot-placeholder {
+    background: #fff;
+    border-color: #999;
+  }
+
+  .card:hover {
+    border-color: #999;
+  }
+
+  .led {
+    box-shadow: none;
+    animation: none;
+  }
+
+  .skip-link {
+    display: none;
   }
 }
