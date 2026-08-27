@@ -1,8 +1,8 @@
-# Matei's Home Projects
+# Matei Homelab Website
 
 A personal notebook documenting a home self-hosting setup — Home Assistant, TrueNAS, the \*arr media stack, Frigate cameras, and a hand-built dashboard.
 
-**Live site:** https://maty3378.github.io/Matei-s-home-Projects/
+**Live site:** https://maty3378.github.io/matei-homelab-website/
 
 ## Stack
 
