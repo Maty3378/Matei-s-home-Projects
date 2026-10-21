@@ -6,20 +6,21 @@ A personal notebook documenting a home self-hosting setup — Home Assistant, Tr
 
 ## Stack
 
-Plain HTML and CSS. No build step, no framework, no JavaScript.
+Plain HTML and CSS, plus a little vanilla JavaScript (theme toggle, copy buttons, field-note filters). No build step, no framework.
 
 ## Files
 
 ```
 index.html      the whole site
 style.css       styles
+script.js       small interactive bits
 images/         photos referenced from index.html
 robots.txt      crawler rules + sitemap pointer
 sitemap.xml     single-page sitemap
 ```
 
 ## Deployment
-
+ 
 Served via GitHub Pages, deploying from the `main` branch root — no CI, no workflow file. Pushing to `main` is enough.
 
 ---

@@ -119,7 +119,7 @@
       <div class="panel">
         <div class="panel-top">
           <span>Currently running</span>
-          <span>Aug 2026</span>
+          <span>Oct 2026</span>
         </div>
 
         <ul class="services">
@@ -132,9 +132,9 @@
           <li><span class="led on"><span class="sr-only">Running: </span></span> Prowlarr <i>indexers</i></li>
           <li><span class="led on"><span class="sr-only">Running: </span></span> Frigate <i>cameras</i></li>
           <li><span class="led on"><span class="sr-only">Running: </span></span> Tailscale <i>network</i></li>
-          <li><span class="led work"><span class="sr-only">Still configuring: </span></span> Bazarr <i>subtitles</i></li>
+          <li><span class="led on"><span class="sr-only">Running: </span></span> Bazarr <i>subtitles</i></li>
           <li><span class="led work"><span class="sr-only">Still configuring: </span></span> Cleanuparr <i>tidying</i></li>
-          <li><span class="led work"><span class="sr-only">Still configuring: </span></span> Profilarr <i>profiles</i></li>
+          <li><span class="led on"><span class="sr-only">Running: </span></span> Profilarr <i>profiles</i></li>
           <li><span class="led work"><span class="sr-only">Still configuring: </span></span> Home dashboard <i>my build</i></li>
         </ul>
 
@@ -154,9 +154,10 @@
           <p class="kicker"><span class="led on"><span class="sr-only">Running: </span></span> Automation</p>
           <h3>Home Assistant</h3>
           <p>
-            The first thing I ever self-hosted. Runs on that old Pentium PC on
-            HAOS, with basically every device in the house wired into it at this
-            point. AirCast is still my favourite integration, not gonna lie.
+            The first thing I ever self-hosted. Started on that old Pentium PC
+            on HAOS, and now lives in a VM on the TrueNAS box, with basically
+            every device in the house wired into it. AirCast is still my
+            favourite integration, not gonna lie.
           </p>
         </div>
 
@@ -167,8 +168,10 @@
             Tried running Plex on the old Pentium first. Didn't go well, no GPU
             and barely any RAM. Once I had the newer tower, TrueNAS could run
             everything at once and the whole film/TV pipeline basically runs
-            itself now. Radarr, Sonarr and Prowlarr just work. Bazarr,
-            Cleanuparr and Profilarr I'm still fighting with.
+            itself now. Radarr, Sonarr and Prowlarr just work, Bazarr grabs
+            Romanian and English subtitles for everything, and Profilarr
+            handles the quality profiles. Cleanuparr is the last one I'm still
+            fighting with.
           </p>
         </div>
 
@@ -198,39 +201,397 @@
     </section>
 
     <section id="notes">
-      <p class="label">Recurring problems</p>
+      <p class="label">Problems I've hit</p>
       <h2>Field notes</h2>
 
       <p class="lede">
-        Stuff that's bitten me more than once, written down so I stop
-        re-solving it from scratch.
+        Every problem that's bitten me, what was actually going on, and what
+        fixed it — written down so I stop re-solving things from scratch.
+        Tap one to open it.
       </p>
 
-      <div class="note">
-        <h3>Updating the dashboard throws a 403</h3>
-        <p>
-          The dashboard runs on a Python server in a container managed
-          through Dockge, reading its HTML from a shared folder. Every so
-          often, after editing the file on the host and saving it back into
-          <code>/mnt/Pool/dashboard</code>, nginx starts throwing:
-        </p>
-        <pre><code>403 Forbidden
+      <div class="filters" role="group" aria-label="Filter notes by area">
+        <button type="button" class="filter active" data-filter="all" aria-pressed="true">All <span class="count"></span></button>
+        <button type="button" class="filter" data-filter="hardware" aria-pressed="false">Hardware</button>
+        <button type="button" class="filter" data-filter="truenas" aria-pressed="false">TrueNAS</button>
+        <button type="button" class="filter" data-filter="media" aria-pressed="false">Media</button>
+        <button type="button" class="filter" data-filter="cameras" aria-pressed="false">Cameras</button>
+        <button type="button" class="filter" data-filter="dashboard" aria-pressed="false">Dashboard</button>
+      </div>
+
+      <div class="notes">
+
+        <!-- ============ DASHBOARD ============ -->
+
+        <details class="note" data-tag="dashboard" open>
+          <summary>
+            <span class="tag">Dashboard</span>
+            <h3>Updating the dashboard throws a 403</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            The dashboard is a single HTML file served by an
+            <code>nginx:alpine</code> container in Dockge, reading from
+            <code>/mnt/Pool/dashboard</code>. Every so often, after editing the
+            file and saving it back into that folder, nginx starts throwing:
+          </p>
+          <pre><code>403 Forbidden
 nginx/1.29.8</code></pre>
 
-        <!-- drop the real screenshot in as images/nginx-403.png, then
-             swap this placeholder div for <img src="images/nginx-403.png" alt="…" /> -->
-        <figure>
-          <div class="shot-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Photo coming soon</span>
-          </div>
-          <figcaption>The 403, in the wild</figcaption>
-        </figure>
+          <!-- drop the real screenshot in as images/nginx-403.png, then
+               swap this placeholder div for <img src="images/nginx-403.png" alt="…" /> -->
+          <figure>
+            <div class="shot-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <span>Photo coming soon</span>
+            </div>
+            <figcaption>The 403, in the wild</figcaption>
+          </figure>
 
-        <p>Permissions on the folder get reset somehow. Fix:</p>
-        <pre><code>chmod 755 /mnt/Pool/dashboard
-chown -R root:root /mnt/Pool/dashboard
-chmod 644 /mnt/Pool/dashboard</code></pre>
+          <p class="nl">Why</p>
+          <p>
+            Saving the file from another machine resets its owner and
+            permissions, and nginx can no longer read it.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Folder needs <code>755</code> (nginx has to be able to enter it),
+            the files inside need <code>644</code>:
+          </p>
+          <pre><code>chown -R root:root /mnt/Pool/dashboard
+chmod 755 /mnt/Pool/dashboard
+chmod 644 /mnt/Pool/dashboard/*</code></pre>
+        </details>
+
+        <details class="note" data-tag="dashboard">
+          <summary>
+            <span class="tag">Dashboard</span>
+            <h3>Camera feeds through Home Assistant kept breaking</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            I first pulled the camera streams into the dashboard through Home
+            Assistant. It meant fighting HA's CORS settings, and even when it
+            worked it was flaky.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Skip HA for video entirely. The dashboard now talks straight to
+            Frigate: live view uses go2rtc's MSE stream in a plain
+            <code>&lt;video&gt;</code> element, and recordings and clips come
+            from the Frigate API. HA is only used for the things HA is good at
+            — lights, AC, the air purifier, scenes.
+          </p>
+        </details>
+
+        <!-- ============ CAMERAS ============ -->
+
+        <details class="note" data-tag="cameras">
+          <summary>
+            <span class="tag">Cameras</span>
+            <h3>Home Assistant couldn't reach Frigate</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Frigate runs in Docker on TrueNAS, Home Assistant runs in a VM on
+            the same box. HA could not talk to Frigate on its normal LAN
+            address.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            Hairpin NAT. TrueNAS's Docker port forwarding (DNAT) doesn't
+            handle traffic that leaves the host and comes straight back in, so
+            the VM's requests to the host's own IP went nowhere.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Point the HA ↔ Frigate integration at the
+            <b>Tailscale IPs</b> instead of the LAN ones. Tailscale routes
+            around the NAT problem completely.
+          </p>
+        </details>
+
+        <details class="note" data-tag="cameras">
+          <summary>
+            <span class="tag">Cameras</span>
+            <h3>Recordings with audio wouldn't save</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Turning on audio for the TP-Link VIGI cameras broke recording.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            The cameras send audio as PCM A-law, and that codec isn't allowed
+            inside an MP4 file, which is what Frigate records to.
+          </p>
+          <p class="nl">Fix</p>
+          <p>Tell ffmpeg to transcode the audio to AAC when recording:</p>
+          <pre><code>ffmpeg:
+  output_args:
+    record: preset-record-generic-audio-aac</code></pre>
+        </details>
+
+        <details class="note" data-tag="cameras">
+          <summary>
+            <span class="tag">Cameras</span>
+            <h3>Retention settings ignored after the 0.17 update</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            After moving to Frigate 0.17.0, my old retention config stopped
+            doing what I wanted.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            0.17 replaced the old <code>retain</code> / <code>events</code>
+            layout with separate settings for continuous recording, alerts and
+            detections. Most guides online still show the old format.
+          </p>
+          <p class="nl">Fix</p>
+          <p>Rewrite it in the new structure. Mine keeps about a week:</p>
+          <pre><code>record:
+  enabled: true
+  continuous:
+    days: 7
+  alerts:
+    retain:
+      days: 7
+  detections:
+    retain:
+      days: 7</code></pre>
+        </details>
+
+        <!-- ============ TRUENAS ============ -->
+
+        <details class="note" data-tag="truenas">
+          <summary>
+            <span class="tag">TrueNAS</span>
+            <h3>ZFS refused my Frigate quota</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            I wanted to cap the Frigate dataset at around 120–130 GiB so
+            recordings can't eat the whole pool. Setting the quota just failed.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            ZFS won't let you set a quota smaller than what the dataset is
+            already using.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Delete old recordings first (or shorten retention and let Frigate
+            clean up), check usage, then set the quota:
+          </p>
+          <pre><code>zfs get used Pool/frigate
+zfs set quota=130G Pool/frigate</code></pre>
+        </details>
+
+        <details class="note" data-tag="truenas">
+          <summary>
+            <span class="tag">TrueNAS</span>
+            <h3>Installing things directly on TrueNAS doesn't work</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            I tried installing Hermes Agent straight onto the TrueNAS host
+            with its normal installer. It "installed", but nothing would run.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            TrueNAS SCALE locks the host down on purpose: <code>/</code> is
+            mounted read-only and <code>/home</code> is <code>noexec</code>.
+            The installer drops its binaries somewhere they're not allowed to
+            execute.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Don't fight it. Use the app from the TrueNAS catalog (Community
+            train) and keep its data on the pool at
+            <code>/mnt/Pool/hermes</code>. Rule of thumb: on SCALE, everything
+            goes in an app or a container, never on the host.
+          </p>
+        </details>
+
+        <details class="note" data-tag="truenas">
+          <summary>
+            <span class="tag">TrueNAS</span>
+            <h3>App works on the server but not from my laptop</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Deployed the Odysseus app through Dockge. It started fine, but I
+            couldn't open it from any other device on the network.
+          </p>0
+          <p class="nl">Why</p>
+          <p>
+            Two things. It was only listening on <code>localhost</code>
+            (<code>127.0.0.1</code>), so it ignored everything that wasn't the
+            server itself. And Dockge only manages stacks that live inside its
+            own stacks folder.
+          </p>
+          <p class="nl">Fix</p>
+          <p> 
+            Clone the project into Dockge's stacks path, and change the
+            listen address to <code>0.0.0.0</code> so it accepts connections
+            from the network.
+          </p>
+        </details>
+
+        <details class="note" data-tag="truenas">
+          <summary>
+            <span class="tag">TrueNAS</span>
+            <h3>AirCast stopped findin g my speakers in the HA VM</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            After moving Home Assistant into a VM on the TrueNAS box, the
+            AirCast integration stopped working. It couldn't see any of the
+            Cast devices on the network, even though the VM itself was online
+            and everything else in HA wa s fine.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            AirCast finds devices with multicast discovery (mDNS). By default
+            the VM's network card ignores the guest's requests to receive that
+            multicast traffic, so the discovery packets never reach Home
+            Assistant.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            In TrueNAS go to <b>Virtualization → the HA VM → Devices → NIC →
+            Edit</b>, tick <b>Trust Guest Rx Filters</b>, save and restart the
+            VM, and AirCast can see the speakers again.
+          </p>
+        </details>
+
+        <!-- ============ MEDIA ============ -->
+
+        <details class="note" data-tag="media">
+          <summary>
+            <span class="tag">Media</span>
+            <h3>Downloads finish, Sonarr never imports them</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            qBittorrent completes the download, Sonarr just sits there and
+            never moves the file into the library.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            Path mismatch. qBittorrent reports where it saved the file using
+            <i>its</i> container's path. If Sonarr has the same dataset mounted
+            at a different path, it goes looking in a folder that doesn't
+            exist for it.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Make the qBittorrent category save path match the in-container
+            mount path exactly, and mount the dataset at the same path in both
+            containers.
+          </p>
+        </details>
+
+        <details class="note" data-tag="media">
+          <summary>
+            <span class="tag">Media</span>
+            <h3>Jellyfin showing films I deleted ages ago</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Films I'd deleted long ago were still in the Jellyfin library, and
+            on top of that no movie had the right title or poster.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Normal rescans didn't clear the ghosts. What worked was wiping the
+            library and letting Jellyfin discover everything again from
+            scratch.
+          </p>
+        </details>
+
+        <details class="note" data-tag="media">
+          <summary>
+            <span class="tag">Media</span>
+            <h3>One Seerr can't do Plex and Jellyfin</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            I use Plex at home and Jellyfin for remote family streaming over
+            Tailscale. I wanted one request page for both.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            A single Seerr instance can only be connected to one media server
+            at a time.
+          </p>
+          <p class="nl">Fix</p>
+          <p>Run two Seerr instances — one for Plex, one for Jellyfin.</p>
+        </details>
+
+        <details class="note" data-tag="media">
+          <summary>
+            <span class="tag">Media</span>
+            <h3>Quality profiles were a mess</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Managing quality profiles through Recyclarr meant editing YAML,
+            and the usual advice is to run separate Radarr/Sonarr instances for
+            4K and anime, which doubles everything.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            Swapped Recyclarr for <b>Profilarr</b> (it has a proper UI),
+            linked it to the Dictionarry database, and kept
+            <b>one instance per app</b> with multiple profiles inside: Radarr
+            has 2160p Remux + 1080p Remux, Sonarr has 2160p Quality + 1080p
+            Efficient.
+          </p>
+        </details>
+
+        <!-- ============ HARDWARE ============ -->
+
+        <details class="note" data-tag="hardware">
+          <summary>
+            <span class="tag">Hardware</span>
+            <h3>No option to run a Home Assistant VM</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            I moved Home Assistant into a VM on the TrueNAS box, but out of
+            the box the board had virtualisation switched off.
+          </p>
+          <p class="nl">Fix</p>
+          <p>
+            In the BIOS of the ASUS PRIME A320M-K, turn on <b>SVM</b> (AMD's
+            virtualisation) and <b>IOMMU</b>. After that TrueNAS can run VMs.
+          </p>
+        </details>
+
+        <details class="note" data-tag="hardware">
+          <summary>
+            <span class="tag">Hardware</span>
+            <h3>RAM that the motherboard didn't like</h3>
+          </summary>
+          <p class="nl">Problem</p>
+          <p>
+            Corsair Vengeance LPX DDR4 sticks gave me compatibility trouble on
+            the A320M-K.
+          </p>
+          <p class="nl">Why</p>
+          <p>
+            They're not on the board's QVL (the list of RAM the manufacturer
+            actually tested).
+          </p>
+          <p class="nl">Lesson</p>
+          <p>
+            Check the motherboard's QVL before buying RAM, especially on
+            budget boards.
+          </p>
+        </details>
+
       </div>
     </section>
 

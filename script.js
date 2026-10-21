@@ -30,6 +30,39 @@
     pre.appendChild(btn);
   });
 
+  // Field notes: filter chips by area
+  var notes = document.querySelectorAll(".notes .note");
+  var filters = document.querySelectorAll(".filter");
+  var allCount = document.querySelector('.filter[data-filter="all"] .count');
+  if (allCount) allCount.textContent = "(" + notes.length + ")";
+
+  filters.forEach(function (btn) {
+    var tag = btn.getAttribute("data-filter");
+    if (tag !== "all") {
+      var n = document.querySelectorAll('.notes .note[data-tag="' + tag + '"]').length;
+      btn.insertAdjacentHTML("beforeend", ' <span class="count">(' + n + ")</span>");
+    }
+    btn.addEventListener("click", function () {
+      filters.forEach(function (b) {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
+      notes.forEach(function (note) {
+        note.hidden = tag !== "all" && note.getAttribute("data-tag") !== tag;
+      });
+    });
+  });
+
+  // open every note when printing so nothing is hidden on paper
+  window.addEventListener("beforeprint", function () {
+    notes.forEach(function (note) {
+      note.hidden = false;
+      note.open = true;
+    });
+  });
+
   var sections = document.querySelectorAll("main section[id]");
   var navLinks = document.querySelectorAll("nav a[href^='#']");
   var linkByHash = {};
