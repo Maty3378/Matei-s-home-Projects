@@ -6,12 +6,13 @@ A personal notebook documenting a home self-hosting setup — Home Assistant, Tr
 
 ## Stack
 
-Plain HTML and CSS, plus a little vanilla JavaScript (theme toggle, copy buttons, field-note filters). No build step, no framework.
+Plain HTML and CSS, plus a little vanilla JavaScript (theme toggle, copy buttons, field-note search, filters and permalinks, photo lightbox). No build step, no framework.
 
 ## Files
 
 ```
 index.html      the whole site
+404.html        not-found page (GitHub Pages serves it automatically)
 style.css       styles
 script.js       small interactive bits
 images/         photos referenced from index.html

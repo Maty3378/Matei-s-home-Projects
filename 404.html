@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Not found · Matei's Homelab</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#131519" />
+
+    <script>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme =
+          stored ||
+          (window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23131519'/%3E%3Crect x='7' y='9' width='18' height='5' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='2'/%3E%3Crect x='7' y='18' width='18' height='5' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='2'/%3E%3Ccircle cx='10.5' cy='11.5' r='1.3' fill='%234ADE80'/%3E%3Ccircle cx='10.5' cy='20.5' r='1.3' fill='%234ADE80'/%3E%3C/svg%3E"
+    />
+
+    <!-- absolute paths: GitHub Pages serves this page for any missing URL, however deep -->
+    <link rel="stylesheet" href="/matei-homelab-website/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <h1>Matei's Homelab</h1>
+    </header>
+
+    <main>
+      <section>
+        <p class="label">404</p>
+        <h2>Nothing running here</h2>
+
+        <div class="panel">
+          <div class="panel-top">
+            <span>Status</span>
+            <span>404</span>
+          </div>
+          <ul class="services">
+            <li><span class="led"><span class="sr-only">Not running: </span></span> This page <i>not found</i></li>
+          </ul>
+        </div>
+
+        <p class="lede" style="margin-top: 30px">
+          The link might be old, or I moved something and forgot. Happens a lot.
+        </p>
+        <p><a href="/matei-homelab-website/">Back to the homelab</a></p>
+      </section>
+    </main>
+  </body>
+</html>

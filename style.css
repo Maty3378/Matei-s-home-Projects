@@ -125,7 +125,8 @@ header h1 {
 
 nav {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 6px 20px;
 }
 
 nav a {
@@ -184,6 +185,12 @@ section {
   margin: 0 auto;
   padding: 70px 24px;
   border-bottom: 1px solid var(--border);
+}
+
+/* keep anchored targets clear of the sticky header */
+section[id],
+.notes .note {
+  scroll-margin-top: 90px;
 }
 
 .label {
@@ -486,12 +493,65 @@ figcaption {
   white-space: pre;
 }
 
-/* ---------- field notes: filters + collapsible notes ---------- */
+/* ---------- field notes: search, filters + collapsible notes ---------- */
+.notes-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+  max-width: 68ch;
+}
+
+.note-search {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 9px 14px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.note-search::placeholder {
+  color: var(--text-dim);
+}
+
+.note-search:focus-visible {
+  outline-offset: 0;
+}
+
+.tool-btn {
+  padding: 9px 14px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tool-btn:hover {
+  color: var(--copper);
+  border-color: #333945;
+}
+
+.notes-empty {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 26px 0 20px;
+  margin: 14px 0 20px;
 }
 
 .filter {
@@ -586,6 +646,37 @@ figcaption {
   margin-bottom: 24px;
 }
 
+.permalink {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  opacity: 0;
+}
+
+.note summary:hover .permalink,
+.permalink:focus-visible {
+  opacity: 1;
+}
+
+.permalink:hover {
+  color: var(--copper);
+}
+
+@media (hover: none) {
+  .permalink {
+    opacity: 0.6;
+  }
+}
+
+.updated {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
 .tag {
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.66rem;
@@ -632,6 +723,194 @@ figcaption {
 .copy-btn:hover {
   color: var(--copper);
   border-color: #333945;
+}
+
+/* ---------- setup: wiring diagram + specs ---------- */
+.diagram {
+  margin-top: 30px;
+}
+
+.diagram-scroll {
+  overflow-x: auto;
+}
+
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+}
+
+.d-box {
+  fill: var(--card);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.d-accent {
+  stroke: var(--copper);
+  stroke-opacity: 0.6;
+}
+
+.d-disk {
+  fill: var(--bg);
+}
+
+.d-zone {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+
+.d-zone-main {
+  fill: var(--bg);
+  stroke-dasharray: none;
+}
+
+.d-zone-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--copper);
+}
+
+.d-title {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--text);
+}
+
+.d-sub,
+.d-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  fill: var(--text-dim);
+}
+
+.d-edge {
+  fill: none;
+  stroke: var(--text-dim);
+  stroke-width: 1.5;
+}
+
+.d-dashed {
+  stroke-dasharray: 3 3;
+}
+
+.d-arrow {
+  fill: var(--text-dim);
+}
+
+.specs-panel {
+  max-width: 560px;
+}
+
+.specs div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  padding: 9px 16px;
+  border-bottom: 1px solid rgba(37, 41, 50, 0.5);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.specs dt {
+  width: 6.5em;
+  flex-shrink: 0;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+
+.specs dd i {
+  font-style: normal;
+  color: var(--text-dim);
+  margin-left: 6px;
+}
+
+.specs-note {
+  padding: 11px 16px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* ---------- site log ---------- */
+.log {
+  list-style: none;
+  max-width: 60ch;
+}
+
+.log li {
+  display: flex;
+  gap: 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.log li:last-child {
+  border-bottom: none;
+}
+
+.log time {
+  flex-shrink: 0;
+  width: 6.5em;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--copper);
+  line-height: 2.2;
+}
+
+.log p {
+  color: var(--text-dim);
+}
+
+/* ---------- photo lightbox ---------- */
+img.zoomable {
+  cursor: zoom-in;
+}
+
+.lightbox {
+  margin: auto;
+  padding: 0;
+  max-width: min(1100px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.lightbox::backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.lightbox img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 110px);
+  margin: 0 auto;
+}
+
+.lightbox-caption {
+  padding: 12px 16px 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.lightbox form {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px 14px;
 }
 
 footer {
@@ -689,7 +968,12 @@ footer {
   }
 
   nav {
-    gap: 14px;
+    gap: 6px 14px;
+  }
+
+  section[id],
+  .notes .note {
+    scroll-margin-top: 130px;
   }
 }
 
@@ -735,6 +1019,10 @@ footer {
   }
 
   .filters,
+  .notes-tools,
+  .notes-empty,
+  .permalink,
+  .lightbox,
   .note summary::after,
   .skip-link,
   .theme-toggle,

@@ -85,6 +85,7 @@
         <nav>
           <a href="#about">About</a>
           <a href="#stack">The stack</a>
+          <a href="#setup">Setup</a>
           <a href="#notes">Field notes</a>
           <a href="#story">Story</a>
           <a href="#gallery">Photos</a>
@@ -200,6 +201,144 @@
       </div>
     </section>
 
+    <section id="setup">
+      <p class="label">How it's wired</p>
+      <h2>One box, two pools</h2>
+
+      <p class="lede">
+        Everything runs on the tower my cousin gave me. This is which service
+        talks to which, the bit I always forget first.
+      </p>
+
+      <figure class="diagram">
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 880 590" role="img" aria-labelledby="diagram-title diagram-desc">
+            <title id="diagram-title">How the homelab is wired</title>
+            <desc id="diagram-desc">
+              One TrueNAS SCALE tower runs everything. Cameras stream to Frigate,
+              smart home devices talk to Home Assistant in a VM, and my dashboard
+              talks to both. Home Assistant reaches Frigate over Tailscale IPs.
+              Seerr sends requests to Sonarr and Radarr, which search through
+              Prowlarr and hand downloads to qBittorrent. Downloads land on
+              temp-pool, where Plex and Jellyfin read them. Frigate recordings,
+              the dashboard and app data live on Pool. Remote devices come in
+              over Tailscale.
+            </desc>
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="d-arrow" d="M0 0L10 5L0 10z" />
+              </marker>
+            </defs>
+
+            <!-- outside the box -->
+            <rect class="d-box" x="16" y="64" width="150" height="72" rx="8" />
+            <text class="d-title" x="30" y="92">VIGI cameras</text>
+            <text class="d-sub" x="30" y="112">TP-Link · RTSP</text>
+
+            <rect class="d-box" x="16" y="160" width="150" height="72" rx="8" />
+            <text class="d-title" x="30" y="188">Smart home</text>
+            <text class="d-sub" x="30" y="208">lights, AC, Cast</text>
+
+            <rect class="d-box" x="16" y="284" width="150" height="60" rx="8" />
+            <text class="d-title" x="30" y="308">Away from home</text>
+            <text class="d-sub" x="30" y="328">over Tailscale</text>
+
+            <!-- the tower -->
+            <rect class="d-zone d-zone-main" x="196" y="20" width="668" height="556" rx="12" />
+            <text class="d-zone-label" x="216" y="46">TrueNAS SCALE · Ryzen 7 1700 · 16 GB</text>
+
+            <rect class="d-box d-accent" x="220" y="64" width="190" height="72" rx="8" />
+            <text class="d-title" x="234" y="92">Frigate 0.17</text>
+            <text class="d-sub" x="234" y="112">Docker · go2rtc</text>
+
+            <rect class="d-box d-accent" x="220" y="160" width="190" height="72" rx="8" />
+            <text class="d-title" x="234" y="188">Home Assistant</text>
+            <text class="d-sub" x="234" y="208">HAOS in a VM</text>
+
+            <rect class="d-box d-accent" x="654" y="112" width="190" height="72" rx="8" />
+            <text class="d-title" x="668" y="140">My dashboard</text>
+            <text class="d-sub" x="668" y="160">nginx · Dockge</text>
+
+            <!-- media apps -->
+            <rect class="d-zone" x="220" y="262" width="624" height="168" rx="10" />
+            <text class="d-zone-label" x="236" y="284">Media · Docker apps</text>
+
+            <rect class="d-box" x="236" y="298" width="120" height="52" rx="7" />
+            <text class="d-title" x="248" y="320">Seerr ×2</text>
+            <text class="d-sub" x="248" y="338">requests</text>
+
+            <rect class="d-box" x="384" y="298" width="136" height="52" rx="7" />
+            <text class="d-title" x="396" y="320">Sonarr · Radarr</text>
+            <text class="d-sub" x="396" y="338">+ Profilarr</text>
+
+            <rect class="d-box" x="548" y="298" width="120" height="52" rx="7" />
+            <text class="d-title" x="560" y="320">qBittorrent</text>
+            <text class="d-sub" x="560" y="338">downloads</text>
+
+            <rect class="d-box" x="696" y="298" width="132" height="52" rx="7" />
+            <text class="d-title" x="708" y="320">Plex · Jellyfin</text>
+            <text class="d-sub" x="708" y="338">watching</text>
+
+            <rect class="d-box" x="236" y="370" width="120" height="44" rx="7" />
+            <text class="d-title" x="248" y="389">Bazarr</text>
+            <text class="d-sub" x="248" y="405">RO + EN subs</text>
+
+            <rect class="d-box" x="384" y="370" width="136" height="44" rx="7" />
+            <text class="d-title" x="396" y="389">Prowlarr</text>
+            <text class="d-sub" x="396" y="405">indexers</text>
+
+            <!-- storage -->
+            <rect class="d-box d-disk" x="220" y="454" width="300" height="100" rx="8" />
+            <text class="d-title" x="236" y="482">Pool</text>
+            <text class="d-sub" x="236" y="504">2 × 500 GB HDD · mirror</text>
+            <text class="d-sub" x="236" y="526">Frigate · dashboard · app data</text>
+
+            <rect class="d-box d-disk" x="544" y="454" width="300" height="100" rx="8" />
+            <text class="d-title" x="560" y="482">temp-pool</text>
+            <text class="d-sub" x="560" y="504">1 × 500 GB HDD · stripe</text>
+            <text class="d-sub" x="560" y="526">films + shows · the roadside drive</text>
+
+            <!-- connections -->
+            <path class="d-edge" d="M166 100H220" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M166 196H220" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M654 128H532V100H410" marker-end="url(#arrow)" />
+            <text class="d-label" x="470" y="92" text-anchor="middle">video + clips</text>
+            <path class="d-edge" d="M654 168H532V196H410" marker-end="url(#arrow)" />
+            <text class="d-label" x="470" y="216" text-anchor="middle">WebSocket</text>
+            <path class="d-edge d-dashed" d="M315 136V160" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+            <text class="d-label" x="326" y="152">Tailscale IPs</text>
+            <path class="d-edge" d="M166 314H236" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M356 324H384" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M520 324H548" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M452 370V350" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M608 350V454" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M762 454V350" marker-end="url(#arrow)" />
+            <path class="d-edge" d="M220 118H206V490H220" marker-end="url(#arrow)" />
+          </svg>
+        </div>
+        <figcaption>Arrows point the way requests and files go. Scroll sideways on a phone.</figcaption>
+      </figure>
+
+      <div class="panel specs-panel">
+        <div class="panel-top">
+          <span>The box</span>
+          <span>TrueNAS SCALE</span>
+        </div>
+        <dl class="specs">
+          <div><dt>CPU</dt><dd>AMD Ryzen 7 1700 <i>8 cores · 16 threads</i></dd></div>
+          <div><dt>Board</dt><dd>ASUS PRIME A320M-K</dd></div>
+          <div><dt>RAM</dt><dd>16 GB DDR4-3000 <i>Corsair Vengeance LPX</i></dd></div>
+          <div><dt>GPU</dt><dd>None <i>everything runs on the CPU</i></dd></div>
+          <div><dt>Pool</dt><dd>2 × 500 GB HDD, mirror <i>storage + Frigate</i></dd></div>
+          <div><dt>temp-pool</dt><dd>1 × 500 GB HDD, stripe <i>films + shows</i></dd></div>
+        </dl>
+        <p class="specs-note">
+          The temp-pool drive came out of a PC someone left on the side of the
+          road. Single disk, no redundancy.
+        </p>
+      </div>
+    </section>
+
     <section id="notes">
       <p class="label">Problems I've hit</p>
       <h2>Field notes</h2>
@@ -207,8 +346,14 @@
       <p class="lede">
         Every problem that's bitten me, what was actually going on, and what
         fixed it — written down so I stop re-solving things from scratch.
-        Tap one to open it.
+        Tap one to open it, or search for an error message.
       </p>
+
+      <div class="notes-tools">
+        <label class="sr-only" for="note-search">Search field notes</label>
+        <input id="note-search" class="note-search" type="search" placeholder="Search notes — 403, quota, Tailscale…" autocomplete="off" />
+        <button type="button" id="toggle-notes" class="tool-btn">Expand all</button>
+      </div>
 
       <div class="filters" role="group" aria-label="Filter notes by area">
         <button type="button" class="filter active" data-filter="all" aria-pressed="true">All <span class="count"></span></button>
@@ -219,11 +364,16 @@
         <button type="button" class="filter" data-filter="dashboard" aria-pressed="false">Dashboard</button>
       </div>
 
+      <p class="notes-empty" id="notes-empty" role="status" hidden>No notes match that.</p>
+
+      <!-- each note's id is its permalink (…/#zfs-frigate-quota), so keep ids stable.
+           to date a note, add this inside its <summary>, after the <h3>:
+           <time class="updated" datetime="2026-03">Mar 2026</time> -->
       <div class="notes">
 
         <!-- ============ DASHBOARD ============ -->
 
-        <details class="note" data-tag="dashboard" open>
+        <details class="note" id="dashboard-403" data-tag="dashboard" open>
           <summary>
             <span class="tag">Dashboard</span>
             <h3>Updating the dashboard throws a 403</h3>
@@ -263,7 +413,7 @@ chmod 755 /mnt/Pool/dashboard
 chmod 644 /mnt/Pool/dashboard/*</code></pre>
         </details>
 
-        <details class="note" data-tag="dashboard">
+        <details class="note" id="dashboard-camera-feeds" data-tag="dashboard">
           <summary>
             <span class="tag">Dashboard</span>
             <h3>Camera feeds through Home Assistant kept breaking</h3>
@@ -286,7 +436,7 @@ chmod 644 /mnt/Pool/dashboard/*</code></pre>
 
         <!-- ============ CAMERAS ============ -->
 
-        <details class="note" data-tag="cameras">
+        <details class="note" id="ha-frigate-hairpin-nat" data-tag="cameras">
           <summary>
             <span class="tag">Cameras</span>
             <h3>Home Assistant couldn't reach Frigate</h3>
@@ -311,7 +461,7 @@ chmod 644 /mnt/Pool/dashboard/*</code></pre>
           </p>
         </details>
 
-        <details class="note" data-tag="cameras">
+        <details class="note" id="frigate-audio-aac" data-tag="cameras">
           <summary>
             <span class="tag">Cameras</span>
             <h3>Recordings with audio wouldn't save</h3>
@@ -332,7 +482,7 @@ chmod 644 /mnt/Pool/dashboard/*</code></pre>
     record: preset-record-generic-audio-aac</code></pre>
         </details>
 
-        <details class="note" data-tag="cameras">
+        <details class="note" id="frigate-017-retention" data-tag="cameras">
           <summary>
             <span class="tag">Cameras</span>
             <h3>Retention settings ignored after the 0.17 update</h3>
@@ -364,7 +514,7 @@ chmod 644 /mnt/Pool/dashboard/*</code></pre>
 
         <!-- ============ TRUENAS ============ -->
 
-        <details class="note" data-tag="truenas">
+        <details class="note" id="zfs-frigate-quota" data-tag="truenas">
           <summary>
             <span class="tag">TrueNAS</span>
             <h3>ZFS refused my Frigate quota</h3>
@@ -388,7 +538,7 @@ chmod 644 /mnt/Pool/dashboard/*</code></pre>
 zfs set quota=130G Pool/frigate</code></pre>
         </details>
 
-        <details class="note" data-tag="truenas">
+        <details class="note" id="truenas-host-installs" data-tag="truenas">
           <summary>
             <span class="tag">TrueNAS</span>
             <h3>Installing things directly on TrueNAS doesn't work</h3>
@@ -414,7 +564,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           </p>
         </details>
 
-        <details class="note" data-tag="truenas">
+        <details class="note" id="app-listen-address" data-tag="truenas">
           <summary>
             <span class="tag">TrueNAS</span>
             <h3>App works on the server but not from my laptop</h3>
@@ -423,7 +573,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           <p>
             Deployed the Odysseus app through Dockge. It started fine, but I
             couldn't open it from any other device on the network.
-          </p>0
+          </p>
           <p class="nl">Why</p>
           <p>
             Two things. It was only listening on <code>localhost</code>
@@ -432,24 +582,24 @@ zfs set quota=130G Pool/frigate</code></pre>
             own stacks folder.
           </p>
           <p class="nl">Fix</p>
-          <p> 
+          <p>
             Clone the project into Dockge's stacks path, and change the
             listen address to <code>0.0.0.0</code> so it accepts connections
             from the network.
           </p>
         </details>
 
-        <details class="note" data-tag="truenas">
+        <details class="note" id="aircast-vm-multicast" data-tag="truenas">
           <summary>
             <span class="tag">TrueNAS</span>
-            <h3>AirCast stopped findin g my speakers in the HA VM</h3>
+            <h3>AirCast stopped finding my speakers in the HA VM</h3>
           </summary>
           <p class="nl">Problem</p>
           <p>
             After moving Home Assistant into a VM on the TrueNAS box, the
             AirCast integration stopped working. It couldn't see any of the
             Cast devices on the network, even though the VM itself was online
-            and everything else in HA wa s fine.
+            and everything else in HA was fine.
           </p>
           <p class="nl">Why</p>
           <p>
@@ -468,7 +618,7 @@ zfs set quota=130G Pool/frigate</code></pre>
 
         <!-- ============ MEDIA ============ -->
 
-        <details class="note" data-tag="media">
+        <details class="note" id="sonarr-import-paths" data-tag="media">
           <summary>
             <span class="tag">Media</span>
             <h3>Downloads finish, Sonarr never imports them</h3>
@@ -493,7 +643,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           </p>
         </details>
 
-        <details class="note" data-tag="media">
+        <details class="note" id="jellyfin-ghost-films" data-tag="media">
           <summary>
             <span class="tag">Media</span>
             <h3>Jellyfin showing films I deleted ages ago</h3>
@@ -511,7 +661,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           </p>
         </details>
 
-        <details class="note" data-tag="media">
+        <details class="note" id="seerr-plex-jellyfin" data-tag="media">
           <summary>
             <span class="tag">Media</span>
             <h3>One Seerr can't do Plex and Jellyfin</h3>
@@ -530,7 +680,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           <p>Run two Seerr instances — one for Plex, one for Jellyfin.</p>
         </details>
 
-        <details class="note" data-tag="media">
+        <details class="note" id="quality-profiles" data-tag="media">
           <summary>
             <span class="tag">Media</span>
             <h3>Quality profiles were a mess</h3>
@@ -553,7 +703,7 @@ zfs set quota=130G Pool/frigate</code></pre>
 
         <!-- ============ HARDWARE ============ -->
 
-        <details class="note" data-tag="hardware">
+        <details class="note" id="bios-virtualisation" data-tag="hardware">
           <summary>
             <span class="tag">Hardware</span>
             <h3>No option to run a Home Assistant VM</h3>
@@ -570,7 +720,7 @@ zfs set quota=130G Pool/frigate</code></pre>
           </p>
         </details>
 
-        <details class="note" data-tag="hardware">
+        <details class="note" id="ram-qvl" data-tag="hardware">
           <summary>
             <span class="tag">Hardware</span>
             <h3>RAM that the motherboard didn't like</h3>
@@ -689,6 +839,30 @@ zfs set quota=130G Pool/frigate</code></pre>
       </div>
     </section>
 
+    <section id="log">
+      <p class="label">Site log</p>
+      <h2>What changed, and when</h2>
+
+      <ul class="log">
+        <li>
+          <time datetime="2026-10">Oct 2026</time>
+          <p>Notes got search, expand-all and their own links. Added the wiring diagram, the specs and a photo viewer.</p>
+        </li>
+        <li>
+          <time datetime="2026-10">Oct 2026</time>
+          <p>Field notes went from one to fifteen, with filters by area.</p>
+        </li>
+        <li>
+          <time datetime="2026-08">Aug 2026</time>
+          <p>Light/dark theme, copy buttons on code, back-to-top.</p>
+        </li>
+        <li>
+          <time datetime="2026-08">Aug 2026</time>
+          <p>Site went up.</p>
+        </li>
+      </ul>
+    </section>
+
     <section id="contact">
       <p class="label">Say hi</p>
       <h2>Get in touch</h2>
@@ -707,6 +881,14 @@ zfs set quota=130G Pool/frigate</code></pre>
     <footer>
       <p>Built by Matei, mostly at night</p>
     </footer>
+
+    <dialog id="lightbox" class="lightbox" aria-label="Photo">
+      <img alt="" />
+      <p class="lightbox-caption"></p>
+      <form method="dialog">
+        <button type="submit" class="tool-btn lightbox-close">Close</button>
+      </form>
+    </dialog>
 
     <button id="back-to-top" type="button" aria-label="Back to top">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
