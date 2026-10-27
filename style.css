@@ -1,3 +1,37 @@
+/* fonts are self-hosted (fonts/, SIL Open Font License) so visitors never hit Google's servers.
+   latin subset only; the two variable files cover every weight the site uses */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/bricolage-grotesque-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("fonts/ibm-plex-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-400-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-500-latin.woff2") format("woff2");
+}
+
 :root {
   --bg: #131519;
   --card: #1B1E24;
@@ -907,10 +941,14 @@ img.zoomable {
   color: var(--text-dim);
 }
 
-.lightbox form {
+.lightbox-bar {
   display: flex;
   justify-content: flex-end;
   padding: 10px 16px 14px;
+}
+
+.lede-gap {
+  margin-top: 30px;
 }
 
 footer {
@@ -919,6 +957,13 @@ footer {
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.75rem;
   color: var(--text-dim);
+}
+
+.fine-print {
+  max-width: 60ch;
+  margin: 10px auto 0;
+  font-size: 0.68rem;
+  opacity: 0.8;
 }
 
 #back-to-top {

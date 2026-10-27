@@ -8,7 +8,11 @@
     toggle.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
       root.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {
+        // storage blocked: the theme still switches, it just isn't remembered
+      }
       if (themeColorMeta) themeColorMeta.setAttribute("content", THEME_COLORS[next]);
     });
   }
@@ -92,7 +96,7 @@
         setTimeout(function () {
           link.textContent = "#";
         }, 1500);
-      });
+      }).catch(function () {});
     });
     note.querySelector("summary").appendChild(link);
   });
@@ -125,12 +129,13 @@
     btn.type = "button";
     btn.textContent = "Copy";
     btn.addEventListener("click", function () {
+      if (!navigator.clipboard) return;
       navigator.clipboard.writeText(codeText).then(function () {
         btn.textContent = "Copied";
         setTimeout(function () {
           btn.textContent = "Copy";
         }, 1500);
-      });
+      }).catch(function () {});
     });
     pre.appendChild(btn);
   });
@@ -161,6 +166,10 @@
           open();
         }
       });
+    });
+
+    lightbox.querySelector(".lightbox-close").addEventListener("click", function () {
+      lightbox.close();
     });
 
     // clicking the dimmed backdrop closes it

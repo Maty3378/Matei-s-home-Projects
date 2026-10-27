@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maty3378.github.io/matei-homelab-website/sitemap.xml
+Sitemap: https://maty3378.github.io/Matei-s-home-Projects/sitemap.xml

@@ -3,22 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
     <title>Not found · Matei's Homelab</title>
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#131519" />
 
-    <script>
-      (function () {
-        var stored = localStorage.getItem("theme");
-        var theme =
-          stored ||
-          (window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark");
-        document.documentElement.setAttribute("data-theme", theme);
-      })();
-    </script>
+    <script src="/Matei-s-home-Projects/theme-init.js"></script>
 
     <link
       rel="icon"
@@ -26,14 +19,11 @@
     />
 
     <!-- absolute paths: GitHub Pages serves this page for any missing URL, however deep -->
-    <link rel="stylesheet" href="/matei-homelab-website/style.css" />
+    <link rel="stylesheet" href="/Matei-s-home-Projects/style.css" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="/Matei-s-home-Projects/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/Matei-s-home-Projects/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/Matei-s-home-Projects/fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
 
   <body>
@@ -56,10 +46,10 @@
           </ul>
         </div>
 
-        <p class="lede" style="margin-top: 30px">
+        <p class="lede lede-gap">
           The link might be old, or I moved something and forgot. Happens a lot.
         </p>
-        <p><a href="/matei-homelab-website/">Back to the homelab</a></p>
+        <p><a href="/Matei-s-home-Projects/">Back to the homelab</a></p>
       </section>
     </main>
   </body>
