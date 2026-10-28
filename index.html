@@ -21,6 +21,9 @@
     <meta property="og:site_name" content="Matei's Homelab" />
     <meta property="og:url" content="https://maty3378.github.io/Matei-s-home-Projects/" />
     <meta property="og:image" content="https://maty3378.github.io/Matei-s-home-Projects/images/dashboard.jpg" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="1190" />
+    <meta property="og:image:alt" content="My home dashboard: weather, air quality, light controls for each room and the living room media players" />
     <link rel="canonical" href="https://maty3378.github.io/Matei-s-home-Projects/" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Matei's Homelab" />
@@ -30,7 +33,7 @@
     />
     <meta name="twitter:image" content="https://maty3378.github.io/Matei-s-home-Projects/images/dashboard.jpg" />
     <meta name="theme-color" content="#131519" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
 
     <script src="theme-init.js"></script>
 
@@ -179,7 +182,7 @@
         </div>
 
         <div class="card">
-          <p class="kicker"><span class="led work"></span> Never finished</p>
+          <p class="kicker"><span class="led work"><span class="sr-only">Still configuring: </span></span> Never finished</p>
           <h3>My own dashboard</h3>
           <p>
             Got tired of Home Assistant's default dashboards not looking how I
@@ -793,9 +796,9 @@ zfs set quota=130G Pool/frigate</code></pre>
       </div>
     </section>
 
-    <!-- drop real files into images/ using these names, then swap each
-         remaining .shot-placeholder div below for <img src="images/…" alt="…" />
-         (server.jpg still to come — Frigate skipped for privacy) -->
+    <!-- the tower photo: just save it as images/tower.jpg. until that file
+         exists, script.js swaps in the "coming soon" placeholder.
+         (Frigate skipped for privacy) -->
     <section id="gallery">
       <p class="label">Photos</p>
       <h2>What it actually looks like</h2>
@@ -813,7 +816,15 @@ zfs set quota=130G Pool/frigate</code></pre>
           <figcaption>The dashboard I built from scratch</figcaption>
         </figure>
         <figure>
-          <div class="shot-placeholder">
+          <img
+            src="images/tower.jpg"
+            alt="The TrueNAS tower with its side panel off: Ryzen cooler, ASUS PRIME A320 board and three hard drives in orange caddies, an old Samsung monitor sitting on top"
+            decoding="async"
+            width="1012"
+            height="1800"
+            data-fallback
+          />
+          <div class="shot-placeholder" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
             <span>Photo coming soon</span>
           </div>

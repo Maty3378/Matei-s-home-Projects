@@ -13,4 +13,8 @@
       ? "light"
       : "dark");
   document.documentElement.setAttribute("data-theme", theme);
+
+  // the theme-color meta sits above this script, so the browser bar can match right away
+  var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeColorMeta && theme === "light") themeColorMeta.setAttribute("content", "#F5F3EF");
 })();

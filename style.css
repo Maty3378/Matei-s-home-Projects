@@ -36,6 +36,9 @@
   --bg: #131519;
   --card: #1B1E24;
   --border: #252932;
+  --border-strong: #333945;
+  --row-line: rgba(37, 41, 50, 0.5);
+  --well: #22262E;
   --text: #E6E8EC;
   --text-dim: #9BA3AF;
   --green: #4ADE80;
@@ -48,6 +51,9 @@
   --bg: #F5F3EF;
   --card: #FFFFFF;
   --border: #E3DFD7;
+  --border-strong: #C9C3B8;
+  --row-line: #EEEBE5;
+  --well: #ECE8E1;
   --text: #1B1E24;
   --text-dim: #57606A;
   --copper: #9C5209;
@@ -194,7 +200,7 @@ nav a.active {
 
 .theme-toggle:hover {
   color: var(--copper);
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 .theme-toggle svg {
@@ -289,7 +295,7 @@ h3 {
   align-items: center;
   gap: 10px;
   padding: 9px 16px;
-  border-bottom: 1px solid rgba(37, 41, 50, 0.5);
+  border-bottom: 1px solid var(--row-line);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.82rem;
 }
@@ -361,7 +367,7 @@ h3 {
 }
 
 .card:hover {
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 .card p {
@@ -395,7 +401,7 @@ h3 {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background-color: #333945;
+  background-color: var(--border-strong);
   border: 2px solid var(--bg);
 }
 
@@ -442,7 +448,7 @@ figure {
   height: 190px;
   object-fit: cover;
   display: block;
-  background-color: #22262E;
+  background-color: var(--well);
 }
 
 .shot-placeholder {
@@ -452,8 +458,12 @@ figure {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background-color: #22262E;
+  background-color: var(--well);
   color: var(--text-dim);
+}
+
+.shot-placeholder[hidden] {
+  display: none;
 }
 
 .shot-placeholder svg {
@@ -571,7 +581,7 @@ figcaption {
 
 .tool-btn:hover {
   color: var(--copper);
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 .notes-empty {
@@ -603,7 +613,7 @@ figcaption {
 
 .filter:hover {
   color: var(--copper);
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 .filter.active {
@@ -756,7 +766,7 @@ figcaption {
 
 .copy-btn:hover {
   color: var(--copper);
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 /* ---------- setup: wiring diagram + specs ---------- */
@@ -847,7 +857,7 @@ figcaption {
   flex-wrap: wrap;
   gap: 2px 14px;
   padding: 9px 16px;
-  border-bottom: 1px solid rgba(37, 41, 50, 0.5);
+  border-bottom: 1px solid var(--row-line);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.82rem;
 }
@@ -995,7 +1005,7 @@ footer {
 
 #back-to-top:hover {
   color: var(--copper);
-  border-color: #333945;
+  border-color: var(--border-strong);
 }
 
 #back-to-top svg {

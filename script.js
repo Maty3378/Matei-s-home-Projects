@@ -40,6 +40,8 @@
       var textMatch = !query || noteText[i].indexOf(query) !== -1;
       note.hidden = !(tagMatch && textMatch);
       if (!note.hidden) shown++;
+      // searching usually means hunting an error message, so show the match, not just the title
+      if (query && !note.hidden) note.open = true;
     });
     if (emptyMsg) emptyMsg.hidden = shown > 0;
   }
@@ -103,7 +105,12 @@
 
   // opening the site at …/#some-note shows that note, even if it was filtered out
   function openNoteFromHash() {
-    var id = decodeURIComponent(location.hash.slice(1));
+    var id;
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch (e) {
+      return; // malformed hash like "#%"
+    }
     var note = id && document.getElementById(id);
     if (!note || !note.matches(".notes .note")) return;
     if (search) search.value = "";
@@ -114,12 +121,20 @@
   openNoteFromHash();
   window.addEventListener("hashchange", openNoteFromHash);
 
-  // open every note when printing so nothing is hidden on paper
+  // open every note when printing so nothing is hidden on paper, then put things back
+  var openBeforePrint = [];
   window.addEventListener("beforeprint", function () {
-    notes.forEach(function (note) {
+    notes.forEach(function (note, i) {
+      openBeforePrint[i] = note.open;
       note.hidden = false;
       note.open = true;
     });
+  });
+  window.addEventListener("afterprint", function () {
+    notes.forEach(function (note, i) {
+      note.open = openBeforePrint[i];
+    });
+    applyFilters();
   });
 
   document.querySelectorAll("pre").forEach(function (pre) {
@@ -138,6 +153,17 @@
       }).catch(function () {});
     });
     pre.appendChild(btn);
+  });
+
+  // photos not added yet: show the "coming soon" placeholder instead of a broken image
+  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+    function useFallback() {
+      var placeholder = img.parentNode.querySelector(".shot-placeholder");
+      if (placeholder) placeholder.hidden = false;
+      img.remove();
+    }
+    if (img.complete && !img.naturalWidth) useFallback();
+    else img.addEventListener("error", useFallback);
   });
 
   // Photos: click (or Enter) to view full size
@@ -193,8 +219,10 @@
           if (!link || !entry.isIntersecting) return;
           navLinks.forEach(function (l) {
             l.classList.remove("active");
+            l.removeAttribute("aria-current");
           });
           link.classList.add("active");
+          link.setAttribute("aria-current", "true");
         });
       },
       { rootMargin: "-40% 0px -55% 0px" }
@@ -208,7 +236,7 @@
   if (backToTop) {
     window.addEventListener("scroll", function () {
       backToTop.classList.toggle("visible", window.scrollY > 400);
-    });
+    }, { passive: true });
     backToTop.addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
