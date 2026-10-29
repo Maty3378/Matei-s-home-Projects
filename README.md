@@ -26,6 +26,12 @@ sitemap.xml     single-page sitemap
  
 Served via GitHub Pages, deploying from the `main` branch root — no CI, no workflow file. Pushing to `main` is enough.
 
+## AI use
+
+The homelab, the photos, and the problems in the field notes are all mine. That stuff actually happened on my server.
+
+I used Claude Code as a coding assistant along the way. It helped me write and check the HTML, CSS and JavaScript, organise the files, and run some final checks before shipping.
+
 ## License
 
 - **Code and text** (HTML, CSS, JS, writing): MIT, see [LICENSE](LICENSE).
