@@ -1,5 +1,3 @@
-/* fonts are self-hosted (fonts/, SIL Open Font License) so visitors never hit Google's servers.
-   latin subset only; the two variable files cover every weight the site uses */
 @font-face {
   font-family: "Bricolage Grotesque";
   font-style: normal;
@@ -227,7 +225,6 @@ section {
   border-bottom: 1px solid var(--border);
 }
 
-/* keep anchored targets clear of the sticky header */
 section[id],
 .notes .note {
   scroll-margin-top: 90px;
@@ -518,6 +515,14 @@ figcaption {
 
 .note figure {
   margin-top: 14px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.note figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .note pre {
@@ -537,7 +542,7 @@ figcaption {
   white-space: pre;
 }
 
-/* ---------- field notes: search, filters + collapsible notes ---------- */
+/* field notes */
 .notes-tools {
   display: flex;
   flex-wrap: wrap;
@@ -769,7 +774,7 @@ figcaption {
   border-color: var(--border-strong);
 }
 
-/* ---------- setup: wiring diagram + specs ---------- */
+/* setup */
 .diagram {
   margin-top: 30px;
 }
@@ -884,7 +889,7 @@ figcaption {
   color: var(--text-dim);
 }
 
-/* ---------- site log ---------- */
+/* site log */
 .log {
   list-style: none;
   max-width: 60ch;
@@ -916,7 +921,7 @@ figcaption {
   color: var(--text-dim);
 }
 
-/* ---------- photo lightbox ---------- */
+/* photo lightbox */
 img.zoomable {
   cursor: zoom-in;
 }

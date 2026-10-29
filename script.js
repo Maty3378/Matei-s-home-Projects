@@ -10,14 +10,11 @@
       root.setAttribute("data-theme", next);
       try {
         localStorage.setItem("theme", next);
-      } catch (e) {
-        // storage blocked: the theme still switches, it just isn't remembered
-      }
+      } catch (e) {}
       if (themeColorMeta) themeColorMeta.setAttribute("content", THEME_COLORS[next]);
     });
   }
 
-  // Field notes: filter chips by area, plus text search
   var notes = document.querySelectorAll(".notes .note");
   var filters = document.querySelectorAll(".filter");
   var search = document.getElementById("note-search");
@@ -26,7 +23,6 @@
   var allCount = document.querySelector('.filter[data-filter="all"] .count');
   if (allCount) allCount.textContent = "(" + notes.length + ")";
 
-  // read the text before copy buttons and permalinks are added, so they don't match searches
   var noteText = [];
   notes.forEach(function (note, i) {
     noteText[i] = note.textContent.toLowerCase();
@@ -40,7 +36,6 @@
       var textMatch = !query || noteText[i].indexOf(query) !== -1;
       note.hidden = !(tagMatch && textMatch);
       if (!note.hidden) shown++;
-      // searching usually means hunting an error message, so show the match, not just the title
       if (query && !note.hidden) note.open = true;
     });
     if (emptyMsg) emptyMsg.hidden = shown > 0;
@@ -81,7 +76,6 @@
     });
   }
 
-  // every note gets a "#" link; clicking it copies the URL instead of toggling the note
   notes.forEach(function (note) {
     if (!note.id) return;
     var link = document.createElement("a");
@@ -103,13 +97,12 @@
     note.querySelector("summary").appendChild(link);
   });
 
-  // opening the site at …/#some-note shows that note, even if it was filtered out
   function openNoteFromHash() {
     var id;
     try {
       id = decodeURIComponent(location.hash.slice(1));
     } catch (e) {
-      return; // malformed hash like "#%"
+      return;
     }
     var note = id && document.getElementById(id);
     if (!note || !note.matches(".notes .note")) return;
@@ -121,7 +114,6 @@
   openNoteFromHash();
   window.addEventListener("hashchange", openNoteFromHash);
 
-  // open every note when printing so nothing is hidden on paper, then put things back
   var openBeforePrint = [];
   window.addEventListener("beforeprint", function () {
     notes.forEach(function (note, i) {
@@ -155,7 +147,6 @@
     pre.appendChild(btn);
   });
 
-  // photos not added yet: show the "coming soon" placeholder instead of a broken image
   document.querySelectorAll("img[data-fallback]").forEach(function (img) {
     function useFallback() {
       var placeholder = img.parentNode.querySelector(".shot-placeholder");
@@ -166,7 +157,6 @@
     else img.addEventListener("error", useFallback);
   });
 
-  // Photos: click (or Enter) to view full size
   var lightbox = document.getElementById("lightbox");
   if (lightbox && lightbox.showModal) {
     var lightboxImg = lightbox.querySelector("img");
@@ -198,7 +188,6 @@
       lightbox.close();
     });
 
-    // clicking the dimmed backdrop closes it
     lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) lightbox.close();
     });
