@@ -14,7 +14,7 @@
 *.log
 npm-debug.log*
 
-# Build outputs / dependencies (not currently used, kept for safety)
+# build stuff, not using any of this yet
 /dist
 /build
 node_modules/

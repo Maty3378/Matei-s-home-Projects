@@ -1,233 +1,247 @@
-(function () {
-  var root = document.documentElement;
-  var themeColorMeta = document.querySelector('meta[name="theme-color"]');
-  var THEME_COLORS = { dark: "#131519", light: "#F5F3EF" };
+// Everything interactive on the page. No framework, just plain JS.
+// Dark mode gets turned on early by theme-init.js, this file only handles the button.
 
-  var toggle = document.getElementById("theme-toggle");
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", next);
-      try {
-        localStorage.setItem("theme", next);
-      } catch (e) {}
-      if (themeColorMeta) themeColorMeta.setAttribute("content", THEME_COLORS[next]);
-    });
+const root = document.documentElement;
+
+
+// ---------- dark mode button ----------
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  root.classList.toggle("dark");
+
+  try {
+    localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+  } catch (err) {
+    // can't save it, it'll just reset next visit
   }
+});
 
-  var notes = document.querySelectorAll(".notes .note");
-  var filters = document.querySelectorAll(".filter");
-  var search = document.getElementById("note-search");
-  var emptyMsg = document.getElementById("notes-empty");
-  var activeTag = "all";
-  var allCount = document.querySelector('.filter[data-filter="all"] .count');
-  if (allCount) allCount.textContent = "(" + notes.length + ")";
 
-  var noteText = [];
-  notes.forEach(function (note, i) {
-    noteText[i] = note.textContent.toLowerCase();
-  });
+// ---------- field notes: search + filters ----------
 
-  function applyFilters() {
-    var query = search ? search.value.trim().toLowerCase() : "";
-    var shown = 0;
-    notes.forEach(function (note, i) {
-      var tagMatch = activeTag === "all" || note.getAttribute("data-tag") === activeTag;
-      var textMatch = !query || noteText[i].indexOf(query) !== -1;
-      note.hidden = !(tagMatch && textMatch);
-      if (!note.hidden) shown++;
-      if (query && !note.hidden) note.open = true;
-    });
-    if (emptyMsg) emptyMsg.hidden = shown > 0;
-  }
+const notes = document.querySelectorAll(".notes .note");
+const filterButtons = document.querySelectorAll(".filter");
+const searchBox = document.getElementById("note-search");
+const noResults = document.getElementById("notes-empty");
+let currentTag = "all";
 
-  function setFilter(tag) {
-    activeTag = tag;
-    filters.forEach(function (b) {
-      var on = b.getAttribute("data-filter") === tag;
-      b.classList.toggle("active", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
-    });
-    applyFilters();
-  }
+// grab the text now, before the "#" links get added to each note
+const noteText = Array.from(notes, (note) => note.textContent.toLowerCase());
 
-  filters.forEach(function (btn) {
-    var tag = btn.getAttribute("data-filter");
-    if (tag !== "all") {
-      var n = document.querySelectorAll('.notes .note[data-tag="' + tag + '"]').length;
-      btn.insertAdjacentHTML("beforeend", ' <span class="count">(' + n + ")</span>");
+function filterNotes() {
+  const query = searchBox.value.trim().toLowerCase();
+  let shown = 0;
+
+  notes.forEach((note, i) => {
+    const tagOk = currentTag === "all" || note.dataset.tag === currentTag;
+    const textOk = query === "" || noteText[i].includes(query);
+    note.hidden = !(tagOk && textOk);
+
+    if (!note.hidden) {
+      shown++;
+      // open matches while searching so you can see what matched
+      if (query) note.open = true;
     }
-    btn.addEventListener("click", function () {
-      setFilter(tag);
-    });
   });
 
-  if (search) search.addEventListener("input", applyFilters);
+  noResults.hidden = shown > 0;
+}
 
-  var toggleNotes = document.getElementById("toggle-notes");
-  var expanded = false;
-  if (toggleNotes) {
-    toggleNotes.addEventListener("click", function () {
-      expanded = !expanded;
-      notes.forEach(function (note) {
-        if (!note.hidden) note.open = expanded;
-      });
-      toggleNotes.textContent = expanded ? "Collapse all" : "Expand all";
-    });
+function setTag(tag) {
+  currentTag = tag;
+  filterButtons.forEach((btn) => {
+    const active = btn.dataset.filter === tag;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", active);
+  });
+  filterNotes();
+}
+
+filterButtons.forEach((btn) => {
+  const tag = btn.dataset.filter;
+  const count = tag === "all"
+    ? notes.length
+    : document.querySelectorAll(`.notes .note[data-tag="${tag}"]`).length;
+
+  btn.insertAdjacentHTML("beforeend", ` <span class="count">(${count})</span>`);
+  btn.addEventListener("click", () => setTag(tag));
+});
+
+searchBox.addEventListener("input", filterNotes);
+
+
+// ---------- expand / collapse all ----------
+
+const expandButton = document.getElementById("toggle-notes");
+let allOpen = false;
+
+expandButton.addEventListener("click", () => {
+  allOpen = !allOpen;
+  notes.forEach((note) => {
+    if (!note.hidden) note.open = allOpen;
+  });
+  expandButton.textContent = allOpen ? "Collapse all" : "Expand all";
+});
+
+
+// ---------- copying ----------
+
+// copy some text, then swap the button label for a moment so you know it worked
+function copyText(text, el, label, doneLabel) {
+  if (!navigator.clipboard) return; // only exists on https / localhost
+
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      el.textContent = doneLabel;
+      setTimeout(() => {
+        el.textContent = label;
+      }, 1500);
+    })
+    .catch((err) => console.warn("copy failed:", err));
+}
+
+// "#" next to each note title, copies a direct link to it
+notes.forEach((note) => {
+  if (!note.id) return;
+
+  const link = document.createElement("a");
+  link.className = "permalink";
+  link.href = "#" + note.id;
+  link.textContent = "#";
+  link.setAttribute("aria-label", "Copy link to this note");
+
+  link.addEventListener("click", (e) => {
+    e.preventDefault(); // don't jump to it, just update the url and copy it
+    history.replaceState(null, "", "#" + note.id);
+    copyText(location.href, link, "#", "copied");
+  });
+
+  note.querySelector("summary").appendChild(link);
+});
+
+// copy button on every code block
+document.querySelectorAll("pre").forEach((pre) => {
+  const code = pre.textContent.trim();
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "copy-btn";
+  btn.textContent = "Copy";
+  btn.addEventListener("click", () => copyText(code, btn, "Copy", "Copied"));
+
+  pre.appendChild(btn);
+});
+
+
+// ---------- opening a note from a link ----------
+
+function openNoteFromHash() {
+  let id;
+  try {
+    id = decodeURIComponent(location.hash.slice(1));
+  } catch (err) {
+    return; // broken hash, ignore it
   }
+  if (!id) return;
 
-  notes.forEach(function (note) {
-    if (!note.id) return;
-    var link = document.createElement("a");
-    link.className = "permalink";
-    link.href = "#" + note.id;
-    link.textContent = "#";
-    link.setAttribute("aria-label", "Copy link to this note");
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      history.replaceState(null, "", "#" + note.id);
-      if (!navigator.clipboard) return;
-      navigator.clipboard.writeText(location.href).then(function () {
-        link.textContent = "copied";
-        setTimeout(function () {
-          link.textContent = "#";
-        }, 1500);
-      }).catch(function () {});
-    });
-    note.querySelector("summary").appendChild(link);
-  });
+  const note = document.getElementById(id);
+  if (!note || !note.matches(".notes .note")) return;
 
-  function openNoteFromHash() {
-    var id;
-    try {
-      id = decodeURIComponent(location.hash.slice(1));
-    } catch (e) {
-      return;
-    }
-    var note = id && document.getElementById(id);
-    if (!note || !note.matches(".notes .note")) return;
-    if (search) search.value = "";
-    setFilter("all");
+  // the search or a filter might be hiding it
+  searchBox.value = "";
+  setTag("all");
+
+  note.open = true;
+  note.scrollIntoView();
+}
+
+openNoteFromHash();
+window.addEventListener("hashchange", openNoteFromHash);
+
+
+// ---------- printing ----------
+// print every note opened up, then put them back how they were
+
+let openBeforePrint = [];
+
+window.addEventListener("beforeprint", () => {
+  openBeforePrint = Array.from(notes, (note) => note.open);
+  notes.forEach((note) => {
+    note.hidden = false;
     note.open = true;
-    note.scrollIntoView();
+  });
+});
+
+window.addEventListener("afterprint", () => {
+  notes.forEach((note, i) => {
+    note.open = openBeforePrint[i];
+  });
+  filterNotes();
+});
+
+
+// ---------- photos ----------
+
+// if a photo with data-fallback won't load, show the "coming soon" box instead
+document.querySelectorAll("img[data-fallback]").forEach((img) => {
+  const useFallback = () => {
+    const placeholder = img.parentNode.querySelector(".shot-placeholder");
+    if (placeholder) placeholder.hidden = false;
+    img.remove();
+  };
+
+  // it might have already failed before this script ran
+  if (img.complete && img.naturalWidth === 0) {
+    useFallback();
+  } else {
+    img.addEventListener("error", useFallback);
   }
-  openNoteFromHash();
-  window.addEventListener("hashchange", openNoteFromHash);
+});
 
-  var openBeforePrint = [];
-  window.addEventListener("beforeprint", function () {
-    notes.forEach(function (note, i) {
-      openBeforePrint[i] = note.open;
-      note.hidden = false;
-      note.open = true;
-    });
-  });
-  window.addEventListener("afterprint", function () {
-    notes.forEach(function (note, i) {
-      note.open = openBeforePrint[i];
-    });
-    applyFilters();
-  });
+// click (or Enter) on a photo to see it bigger
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = lightbox.querySelector("img");
+const lightboxCaption = lightbox.querySelector(".lightbox-caption");
 
-  document.querySelectorAll("pre").forEach(function (pre) {
-    var codeText = pre.textContent.trim();
-    var btn = document.createElement("button");
-    btn.className = "copy-btn";
-    btn.type = "button";
-    btn.textContent = "Copy";
-    btn.addEventListener("click", function () {
-      if (!navigator.clipboard) return;
-      navigator.clipboard.writeText(codeText).then(function () {
-        btn.textContent = "Copied";
-        setTimeout(function () {
-          btn.textContent = "Copy";
-        }, 1500);
-      }).catch(function () {});
-    });
-    pre.appendChild(btn);
-  });
+function openLightbox(img) {
+  const caption = img.closest("figure").querySelector("figcaption");
+  lightboxImg.src = img.currentSrc || img.src;
+  lightboxImg.alt = img.alt;
+  lightboxCaption.textContent = caption ? caption.textContent : "";
+  lightbox.showModal();
+}
 
-  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
-    function useFallback() {
-      var placeholder = img.parentNode.querySelector(".shot-placeholder");
-      if (placeholder) placeholder.hidden = false;
-      img.remove();
+document.querySelectorAll("figure img").forEach((img) => {
+  img.classList.add("zoomable");
+  img.tabIndex = 0;
+  img.setAttribute("role", "button");
+  img.setAttribute("aria-label", "View larger: " + img.alt);
+
+  img.addEventListener("click", () => openLightbox(img));
+  img.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openLightbox(img);
     }
-    if (img.complete && !img.naturalWidth) useFallback();
-    else img.addEventListener("error", useFallback);
   });
+});
 
-  var lightbox = document.getElementById("lightbox");
-  if (lightbox && lightbox.showModal) {
-    var lightboxImg = lightbox.querySelector("img");
-    var lightboxCaption = lightbox.querySelector(".lightbox-caption");
+lightbox.querySelector(".lightbox-close").addEventListener("click", () => lightbox.close());
 
-    document.querySelectorAll("figure img").forEach(function (img) {
-      img.classList.add("zoomable");
-      img.tabIndex = 0;
-      img.setAttribute("role", "button");
-      img.setAttribute("aria-label", "View larger: " + img.alt);
+// clicking the dark bit around the photo closes it too
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) lightbox.close();
+});
 
-      function open() {
-        var caption = img.closest("figure").querySelector("figcaption");
-        lightboxImg.src = img.currentSrc || img.src;
-        lightboxImg.alt = img.alt;
-        lightboxCaption.textContent = caption ? caption.textContent : "";
-        lightbox.showModal();
-      }
-      img.addEventListener("click", open);
-      img.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          open();
-        }
-      });
-    });
 
-    lightbox.querySelector(".lightbox-close").addEventListener("click", function () {
-      lightbox.close();
-    });
+// ---------- back to top ----------
 
-    lightbox.addEventListener("click", function (e) {
-      if (e.target === lightbox) lightbox.close();
-    });
-  }
+const backToTop = document.getElementById("back-to-top");
 
-  var sections = document.querySelectorAll("main section[id]");
-  var navLinks = document.querySelectorAll("nav a[href^='#']");
-  var linkByHash = {};
-  navLinks.forEach(function (link) {
-    linkByHash[link.getAttribute("href")] = link;
-  });
+window.addEventListener("scroll", () => {
+  backToTop.classList.toggle("visible", window.scrollY > 400);
+}, { passive: true });
 
-  if ("IntersectionObserver" in window && sections.length) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          var link = linkByHash["#" + entry.target.id];
-          if (!link || !entry.isIntersecting) return;
-          navLinks.forEach(function (l) {
-            l.classList.remove("active");
-            l.removeAttribute("aria-current");
-          });
-          link.classList.add("active");
-          link.setAttribute("aria-current", "true");
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    sections.forEach(function (section) {
-      observer.observe(section);
-    });
-  }
-
-  var backToTop = document.getElementById("back-to-top");
-  if (backToTop) {
-    window.addEventListener("scroll", function () {
-      backToTop.classList.toggle("visible", window.scrollY > 400);
-    }, { passive: true });
-    backToTop.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-})();
+backToTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});

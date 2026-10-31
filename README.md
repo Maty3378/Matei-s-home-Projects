@@ -1,30 +1,29 @@
-# Matei Homelab Website
+# Matei's Homelab
 
-A personal notebook documenting a home self-hosting setup — Home Assistant, TrueNAS, the \*arr media stack, Frigate cameras, and a hand-built dashboard.
+My notebook for everything I self-host at home: Home Assistant, TrueNAS, the \*arr media stack, Frigate for the cameras, and a dashboard I'm building myself.
 
 **Live site:** https://maty3378.github.io/Matei-s-home-Projects/
 
-## Stack
+## How it's built
 
-Plain HTML and CSS, plus a little vanilla JavaScript (theme toggle, copy buttons, field-note search, filters and permalinks, photo lightbox). No build step, no framework.
+Plain HTML and CSS, plus a bit of vanilla JavaScript for dark mode, copy buttons, searching and filtering the field notes, links to single notes, and the photo viewer. No framework and no build step, the files in this repo are exactly what gets served.
 
-## Files
+## What's where
 
 ```
 index.html      the whole site
-404.html        not-found page (GitHub Pages serves it automatically)
-style.css       styles
-script.js       small interactive bits
-theme-init.js   sets light/dark before first paint (separate file so the CSP can block inline scripts)
-images/         photos referenced from index.html
-fonts/          self-hosted fonts + their OFL licenses (no Google Fonts requests)
-robots.txt      crawler rules + sitemap pointer
-sitemap.xml     single-page sitemap
+404.html        not-found page (GitHub Pages picks it up automatically)
+style.css       all the styles
+script.js       the interactive bits
+theme-init.js   turns on dark mode before the page shows (own file because the CSP blocks inline scripts)
+images/         photos used in index.html
+robots.txt      crawler rules + where the sitemap is
+sitemap.xml     sitemap (it's one page)
 ```
 
-## Deployment
- 
-Served via GitHub Pages, deploying from the `main` branch root — no CI, no workflow file. Pushing to `main` is enough.
+## Deploying
+
+GitHub Pages serves it straight from the root of `main`. There's no CI or workflow file, pushing to `main` is all it takes.
 
 ## AI use
 
@@ -34,13 +33,10 @@ I used Claude Code as a coding assistant along the way. It helped me write and c
 
 ## License
 
-- **Code and text** (HTML, CSS, JS, writing): MIT, see [LICENSE](LICENSE).
-- **Fonts** in `fonts/` are *not* covered by the MIT license. Bricolage Grotesque,
-  IBM Plex Sans and IBM Plex Mono are under the SIL Open Font License 1.1; each
-  font's license is next to it in `fonts/`. "Plex" is a Reserved Font Name of IBM.
+- **Code and text** (HTML, CSS, JS, the writing): MIT, see [LICENSE](LICENSE).
 - **Product names and logos** (TrueNAS, Home Assistant, Plex, Jellyfin, Frigate,
-  etc.) belong to their owners. This project isn't affiliated with any of them.
+  etc.) belong to their owners. I'm not affiliated with any of them.
 
 ---
 
-Still very much a work in progress, and that's the point.
+Still very much a work in progress, and that's kind of the point.
